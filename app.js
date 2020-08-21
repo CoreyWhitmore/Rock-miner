@@ -22,6 +22,50 @@ let upgrades = [
         visibility: "invisible",
         disabled: "disabled",
         description: "Increases Click Power by 1"
+    },
+    {
+        name: "Rat with a spoon",
+        level: 0,
+        cost: 200,
+        clickPower: 0,
+        income: 1,
+        id: "rat",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 1"
+    },
+    {
+        name: "Homeless man",
+        level: 0,
+        cost: 5000,
+        clickPower: 0,
+        income: 25,
+        id: "homeless",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 25"
+    },
+    {
+        name: "Miner",
+        level: 0,
+        cost: 100000,
+        clickPower: 0,
+        income: 500,
+        id: "miner",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 500"
+    },
+    {
+        name: "Digging Machine",
+        level: 0,
+        cost: 5000000,
+        clickPower: 10000,
+        income: 0,
+        id: "digging-machine",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 10,000"
     }
 ]
 
@@ -39,7 +83,7 @@ function drawUpgrades() {
                         ${item.disabled}
                         data-toggle="tooltip"
                         data-placement="right"
-                        title="Tooltip on right">
+                        title="${item.description}">
                             (${item.level}) ${item.name} - ${itemCost}
                             <span id="${item.id}"></span>
                         </button>
