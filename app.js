@@ -1,3 +1,5 @@
+
+
 let areas = ["hole in the ground", "mine", "mantle", "Asteroid", "Moon", "Planet", "Sun", "Black Hole", "Galaxy", "Universe"]
 
 let rockCount = 0
@@ -17,7 +19,9 @@ let upgrades = [
         clickPower: 1,
         income: 0,
         id: "pick",
-        visibility: "invisible"
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases Click Power by 1"
     }
 ]
 
@@ -28,11 +32,24 @@ function drawUpgrades() {
         let item = upgrades[i]
         let itemCost = Math.floor(item.cost)
         template += `<div class="col-12 my-1">
-                        <button id="btn-${item.id}" class="btn btn-primary btn-upgrade ${item.visibility}" type="submit" onclick="upgrade('${item.id}')" disabled>(${item.level}) ${item.name} - ${itemCost}<span
-                                id="${item.id}"></span></button>
+                        <button id="btn-${item.id}"
+                        class="btn btn-primary btn-upgrade ${item.visibility}"
+                        type="submit"
+                        onclick="upgrade('${item.id}')"
+                        ${item.disabled}
+                        data-toggle="tooltip"
+                        data-placement="right"
+                        title="Tooltip on right">
+                            (${item.level}) ${item.name} - ${itemCost}
+                            <span id="${item.id}"></span>
+                        </button>
                     </div>`
     }
     document.getElementById("upgrade-container").innerHTML = template
+    for (let i = 0; i < upgrades.length; i++) {
+        let item = upgrades[i]
+        $(`#btn-${item.id}`).tooltip({})
+    }
 }
 
 //levels up an item whenever you click the relevant button
@@ -40,10 +57,10 @@ function upgrade(id) {
     let item = findItem(id)
     rockCount -= Math.floor(item.cost)
     item.level++
-    item.cost = Math.floor(item.cost * 1.1)
+    item.cost = Math.ceil(item.cost * 1.1)
     updatePlayer()
     updateScreen()
-    console.log(item)
+    drawUpgrades()
 }
 
 //finds an item by it's id
@@ -98,7 +115,6 @@ function updateUnlocks() {
             document.getElementById("btn-" + item.id).setAttribute(`class`, `btn btn-primary btn-upgrade ${item.visibility}`)
         } else {
             document.getElementById("btn-" + item.id).setAttribute("disabled", "")
-
         }
     }
 }
