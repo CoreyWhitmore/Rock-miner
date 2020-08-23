@@ -26,7 +26,7 @@ let upgrades = [
     {
         name: "Rat with a spoon",
         level: 0,
-        cost: 200,
+        cost: 100,
         clickPower: 0,
         income: 1,
         id: "rat",
@@ -37,35 +37,57 @@ let upgrades = [
     {
         name: "Homeless man",
         level: 0,
-        cost: 5000,
+        cost: 1000,
+        clickPower: 0,
+        income: 5,
+        id: "homeless",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 5"
+    },
+    {
+        name: "Miner",
+        level: 0,
+        cost: 10000,
         clickPower: 0,
         income: 25,
-        id: "homeless",
+        id: "miner",
         visibility: "invisible",
         disabled: "disabled",
         description: "Increases income by 25"
     },
     {
-        name: "Miner",
+        name: "Digging Machine",
         level: 0,
         cost: 100000,
         clickPower: 0,
-        income: 500,
-        id: "miner",
-        visibility: "invisible",
-        disabled: "disabled",
-        description: "Increases income by 500"
-    },
-    {
-        name: "Digging Machine",
-        level: 0,
-        cost: 5000000,
-        clickPower: 10000,
-        income: 0,
+        income: 125,
         id: "digging-machine",
         visibility: "invisible",
         disabled: "disabled",
-        description: "Increases income by 10,000"
+        description: "Increases income by 125"
+    },
+    {
+        name: "Blast-miner",
+        level: 0,
+        cost: 1000000,
+        clickPower: 0,
+        income: 1000,
+        id: "blast-miner",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 1,000"
+    },
+    {
+        name: "Excavator",
+        level: 0,
+        cost: 10000000,
+        clickPower: 0,
+        income: 5000,
+        id: "Excavator",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 5,000"
     }
 ]
 
@@ -74,7 +96,8 @@ function drawUpgrades() {
     let template = '<div class="col-12"><h3>Upgrades</h3></div>'
     for (let i = 0; i < upgrades.length; i++) {
         let item = upgrades[i]
-        let itemCost = Math.floor(item.cost)
+        let itemCost = shortNum(item.cost)
+
         template += `<div class="col-12 my-1">
                         <button id="btn-${item.id}"
                         class="btn btn-primary btn-upgrade ${item.visibility}"
@@ -92,7 +115,13 @@ function drawUpgrades() {
     document.getElementById("upgrade-container").innerHTML = template
     for (let i = 0; i < upgrades.length; i++) {
         let item = upgrades[i]
-        $(`#btn-${item.id}`).tooltip({})
+        // @ts-ignore
+        $(`#btn-${item.id}`).tooltip({ delay: { "show": 500, "hide": 100 } })
+        // @ts-ignore
+        $(`#btn-${item.id}`).on('click', function () {
+            // @ts-ignore
+            $(this).tooltip('hide')
+        })
     }
 }
 
@@ -165,15 +194,42 @@ function updateUnlocks() {
 
 //updates the player's stats window
 function updateStats() {
-    document.getElementById("click-power-display").innerText = playerStats.clickPower.toString()
-    document.getElementById("income-display").innerText = playerStats.income.toString()
+    let clickPower
+    let income
+
+
+
+    document.getElementById("click-power-display").innerText = shortNum(playerStats.clickPower)
+    document.getElementById("income-display").innerText = shortNum(playerStats.income)
 }
 
 //calls all relevant update fuctions to update the screen
 function updateScreen() {
-    document.getElementById("rock-count").innerText = (Math.floor(rockCount)).toString()
+    let rockDisplay = shortNum(rockCount)
+    document.getElementById("rock-count").innerText = rockDisplay
     updateStats()
     updateUnlocks()
+}
+
+//Allows for displaying numbers inn exponential form
+function expo(x, f) {
+    return Number.parseFloat(x).toExponential(f);
+}
+
+function shortNum(num) {
+    if (num < 10000) {
+        return (Math.floor(num)).toString()
+    } else if (num >= 10000 && num < 10000000) {
+        return (Math.floor(num / 1000)).toString() + "K"
+    } else if (num >= 10000000 && num < 10000000000) {
+        return (Math.floor(num / 1000000)).toString() + "M"
+    } else if (num >= 10000000000 && num < 10000000000000) {
+        return (Math.floor(num / 1000000000)).toString() + "B"
+    } else if (num >= 10000000000000 && num < 10000000000000000) {
+        return (Math.floor(num / 1000000000000)).toString() + "T"
+    } else {
+        return expo((num), 3).toString()
+    }
 }
 
 
