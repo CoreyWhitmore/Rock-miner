@@ -17,8 +17,8 @@ footer{
  }
 
 img{
+    max-height: 30vh;
     max-width: 100%;
-    max-height: 50vh;
 }
 
 .btn-mine{
@@ -31,4 +31,9 @@ img{
 
 .btn-upgrade{
     width:80%
+}
+
+/* NOTE not really what I wanted, but it works. The idea is for it to take up all available vertical space */
+#stats-display{
+    height:42.7%
 }

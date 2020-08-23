@@ -200,7 +200,7 @@ function updateStats() {
 
 
     document.getElementById("click-power-display").innerText = shortNum(playerStats.clickPower)
-    document.getElementById("income-display").innerText = shortNum(playerStats.income)
+    document.getElementById("income-display").innerText = shortNum(playerStats.income) + "/sec"
 }
 
 //calls all relevant update fuctions to update the screen

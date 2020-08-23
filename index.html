@@ -15,20 +15,23 @@
         <h1 class="pt-1">Rock Miner</h1>
     </header>
     <main class="container-fluid d-flex flex-grow-1">
-        <div class="row d-flex flex-grow-1">
+        <div class="row d-flex">
             <div class="col-3 bg-success">
                 <div class="row" id="upgrade-container">
 
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-6 justify-content-end">
                 <div class="row">
-                    <div class="col text-center">
+                    <div class="col-12 text-center">
                         <h4>Total Rocks: <span id="rock-count">0</span></h4>
+                    </div>
+                    <div class="col-12">
+
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 my-5 d-flex justify-content-center">
+                    <div class="col-12 my-3 d-flex justify-content-center">
                         <img src="./rock-mine.jpg" alt="">
                     </div>
                     <div class="col-12 d-flex justify-content-center">
@@ -39,16 +42,21 @@
                         <p id="message"></p>
                     </div>
                 </div>
-            </div>
-            <div class="col-3 bg-success">
-                <div class="row">
-                    <div class="col-12">
+                <div id="stats-display" class="row bg-danger align-self-end">
+                    <div class="col-12 bg-warning">
                         <h3>Statistics</h3>
                     </div>
                     <div class="col-12">
                         <p>Click Power: <span id="click-power-display">0</span></p>
                         <p>Passive Income: <span id="income-display">0</span></p>
+                        <p>Enhancements: <span id="enhance-display">0</span>%</p>
+                        <p>Achievement Bonus: <span id="achieve-display">0</span></p>
                     </div>
+                </div>
+            </div>
+            <div class="col-3 bg-success">
+                <div class="row">
+
 
                 </div>
 
