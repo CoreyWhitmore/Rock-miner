@@ -1,6 +1,6 @@
 
 
-let rockCount = 0
+let rockCount = 1000000000
 
 
 let playerStats = {
@@ -19,7 +19,7 @@ let upgrades = [
         clickPower: 1,
         income: 0,
         id: "pick",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases Click Power by 1"
     },
@@ -30,7 +30,7 @@ let upgrades = [
         clickPower: 0,
         income: 1,
         id: "rat",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases income by 1"
     },
@@ -41,7 +41,7 @@ let upgrades = [
         clickPower: 0,
         income: 5,
         id: "homeless",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases income by 5"
     },
@@ -52,7 +52,7 @@ let upgrades = [
         clickPower: 0,
         income: 25,
         id: "miner",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases income by 25"
     },
@@ -63,7 +63,7 @@ let upgrades = [
         clickPower: 0,
         income: 125,
         id: "digger-machine",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases income by 125"
     },
@@ -74,7 +74,7 @@ let upgrades = [
         clickPower: 0,
         income: 1000,
         id: "martial-artist",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases income by 1,000"
     },
@@ -85,7 +85,7 @@ let upgrades = [
         clickPower: 0,
         income: 5000,
         id: "bomb-technician",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases income by 5,000"
     },
@@ -96,7 +96,7 @@ let upgrades = [
         clickPower: 0,
         income: 250000,
         id: "giant-drill",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases income by 250,000"
     },
@@ -107,7 +107,7 @@ let upgrades = [
         clickPower: 0,
         income: 2 * (10 ** 7),
         id: "nuclear-blast-miner",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases income by 20,000,000"
     },
@@ -118,7 +118,7 @@ let upgrades = [
         clickPower: 0,
         income: 1.5 * (10 ** 10),
         id: "plasma-lance",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases income by 15,000,000,000"
     },
@@ -129,7 +129,7 @@ let upgrades = [
         clickPower: 0,
         income: 1.0 * (10 ** 13),
         id: "mountain-blaster",
-        visibility: "invisible",
+        visibility: "none",
         disabled: "disabled",
         description: "Increases income by 15,000,000,000"
     }
@@ -144,7 +144,7 @@ let enhancements = [
         purchased: false,
         description: "Mining rocks with sharp tools will be much better than dull ones (+100% rocks)",
         id: "sharp-tools",
-        visibility: "invisible"
+        visibility: "none"
     },
     {
         name: "Coffee Maker",
@@ -153,7 +153,7 @@ let enhancements = [
         purchased: false,
         description: "Lots of caffine so you can work all day long (+100% rocks)",
         id: "coffee-maker",
-        visibility: "invisible"
+        visibility: "none"
     },
     {
         name: "Rock Splitter",
@@ -162,7 +162,7 @@ let enhancements = [
         purchased: false,
         description: "Turns out if you cut a rock in half you have two rocks (+100% rocks)",
         id: "rock-splitter",
-        visibility: "invisible"
+        visibility: "none"
     },
     {
         name: "Strike gold",
@@ -171,7 +171,7 @@ let enhancements = [
         purchased: false,
         description: "Sell all this stupid yellow rock you found for more rocks (+100% rocks)",
         id: "strike-gold",
-        visibility: "invisible"
+        visibility: "none"
     },
     {
         name: "Gem deposit",
@@ -180,7 +180,7 @@ let enhancements = [
         purchased: false,
         description: "Shiny rocks that can be traded for more rocks(+100% rocks)",
         id: "gem-deposit",
-        visibility: "invisible"
+        visibility: "none"
     },
     {
         name: "Geothermal Energy",
@@ -189,7 +189,7 @@ let enhancements = [
         purchased: false,
         description: "All this annoying lava can be harnessed to power your machines!",
         id: "geothermal-energy",
-        visibility: "invisible"
+        visibility: "none"
     }
 ]
 
@@ -202,7 +202,7 @@ function drawUpgrades() {
 
         template += `<div class="col-12 my-1">
                         <button id="btn-${item.id}"
-                        class="btn btn-primary btn-upgrade ${item.visibility}"
+                        class="btn btn-primary btn-upgrade d-${item.visibility}"
                         type="submit"
                         onclick="upgrade('${item.id}')"
                         ${item.disabled}
@@ -236,7 +236,7 @@ function drawEnhancements() {
 
         template += `<div class="col-12 my-1">
                         <button id="btn-${item.id}"
-                        class="btn btn-primary btn-enhance ${item.visibility}"
+                        class="btn btn-primary btn-enhance d-${item.visibility}"
                         type="submit"
                         onclick="purchaseEnhancement('${item.id}')"
                         ${item.disabled}
@@ -267,11 +267,11 @@ function updateEnhanceUnlocks() {
         if (rockCount >= itemCost && item.purchased == false) {
             item.visibility = "visible"
             document.getElementById("btn-" + item.id).removeAttribute("disabled")
-            document.getElementById("btn-" + item.id).setAttribute(`class`, `btn btn-primary btn-enhance ${item.visibility}`)
+            document.getElementById("btn-" + item.id).setAttribute(`class`, `btn btn-primary btn-enhance d-${item.visibility}`)
         } else if (rockCount < itemCost && item.purchased == false) {
             document.getElementById("btn-" + item.id).setAttribute("disabled", "")
         } else (
-            item.visibility = "invisible"
+            item.visibility = "none"
         )
     }
 }
