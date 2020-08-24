@@ -125,9 +125,9 @@ let upgrades = [
     {
         name: "Mountain Blaster",
         level: 0,
-        cost: 10 ** 15,
+        cost: 10 ** 18,
         clickPower: 0,
-        income: 1.5 * (10 ** 10),
+        income: 1.0 * (10 ** 13),
         id: "mountain-blaster",
         visibility: "invisible",
         disabled: "disabled",
@@ -378,19 +378,19 @@ function updateStats() {
     document.getElementById("achieve-display").innerText = shortNum(playerStats.achievementMult * 100)
 }
 
+//array outside function to keep track of competed achievements
+let completeAchievements
+
 //function that handles achievements and contains array holding achievement objects
 function updateAchievements() {
-
-
     //Array holding achievement objects
     let achievements = [
         //upgrade
         {
             title: "Triple Strike",
-            description: "Player owns at least 3 pickaxes",
+            description: "Own at least 3 pickaxes",
             message: "What am I going do do with 3 pickaxes?? I only have two hands! (+10% rocks)",
             bonus: 0.1,
-            complete: false,
             criteria: upgrades[0].level,
             unlockValue: 2
         },
@@ -400,7 +400,6 @@ function updateAchievements() {
             description: "Own 10,000 rocks",
             message: "These are getting hard to count (+10% rocks)",
             bonus: 0.1,
-            complete: false,
             criteria: rockCount,
             unlockValue: 10000
         },
@@ -409,16 +408,14 @@ function updateAchievements() {
             description: "Own 100,000,000 rocks",
             message: "We have to go deeper!  (+30% rocks)",
             bonus: 0.3,
-            complete: false,
             criteria: rockCount,
             unlockValue: 100000000
         },
         {
             title: "Collector III",
-            description: "Own 1,000,000,000,000 rocks",
+            description: "Own a trillion rocks",
             message: "How many rocks are there?? (+60% rocks)",
             bonus: 0.6,
-            complete: false,
             criteria: rockCount,
             unlockValue: 10 ** 12
         },
@@ -427,7 +424,6 @@ function updateAchievements() {
             description: "357 trillion rocks",
             message: "More rocks than the world's tallest mountain  (+100% rocks)",
             bonus: 1.0,
-            complete: false,
             criteria: rockCount,
             unlockValue: 357 ** 12
         },
@@ -436,29 +432,33 @@ function updateAchievements() {
             description: "1.000e+15 rocks",
             message: "Gotta use scientific notation for all these rocks (+150% rocks)",
             bonus: 1.5,
-            complete: false,
             criteria: rockCount,
             unlockValue: 10 ** 15
         }
 
     ]
 
-    //checks for new completed achievements
-    for (let i = 0; i < achievements.length; i++) {
-        let achievement = achievements[i]
-        if (achievement.criteria >= achievement.unlockValue) {
-            achievements[i].complete = true
-            document.getElementById("message-display").innerText = "Achievement: " + achievements[i].title + "\n" + achievements[i].message
+    if (!completeAchievements) {
+        completeAchievements = []
+        for (let i = 0; i < achievements.length; i++) {
+            completeAchievements.push(false)
         }
     }
 
-
+    //checks for new completed achievements
+    for (let i = 0; i < achievements.length; i++) {
+        let achievement = achievements[i]
+        if (achievement.criteria >= achievement.unlockValue && completeAchievements[i] == false) {
+            completeAchievements[i] = true
+            document.getElementById("message-display").innerText = "Achievement: " + achievements[i].title + " - " + achievements[i].description + "\n" + achievements[i].message
+        }
+    }
 
 
     //updates player's stats based on completed achievements
     let achievementBonus = 1
     for (let i = 0; i < achievements.length; i++) {
-        if (achievements[i].complete) {
+        if (completeAchievements[i]) {
             achievementBonus += achievements[i].bonus
         }
     }
