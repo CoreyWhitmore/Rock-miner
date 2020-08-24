@@ -291,7 +291,7 @@ function upgrade(id) {
     let item = findItem(id)
     rockCount -= Math.floor(item.cost)
     item.level++
-    item.cost = Math.ceil(item.cost * 1.1)
+    item.cost = Math.ceil(item.cost * 1.07)
     updatePlayer()
     updateScreen()
     drawUpgrades()
