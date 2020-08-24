@@ -1,8 +1,6 @@
 
 
-let areas = ["hole in the ground", "mine", "mantle", "Asteroid", "Moon", "Planet", "Sun", "Black Hole", "Galaxy", "Universe"]
-
-let rockCount = 10 ** 15
+let rockCount = 0
 
 
 let playerStats = {
@@ -224,10 +222,13 @@ function updateEnhanceUnlocks() {
         let itemCost = Math.floor(item.cost)
         if (rockCount >= itemCost && item.purchased == false) {
             item.visibility = "visible"
+            document.getElementById("btn-" + item.id).removeAttribute("disabled")
             document.getElementById("btn-" + item.id).setAttribute(`class`, `btn btn-primary btn-enhance ${item.visibility}`)
-        } else {
+        } else if (rockCount < itemCost && item.purchased == false) {
+            document.getElementById("btn-" + item.id).setAttribute("disabled", "")
+        } else (
             item.visibility = "invisible"
-        }
+        )
     }
 }
 
@@ -240,7 +241,6 @@ function purchaseEnhancement(id) {
     updateScreen()
     drawEnhancements()
 }
-
 
 //levels up an item whenever you click the relevant button
 function upgrade(id) {
@@ -334,25 +334,27 @@ function updateStats() {
     document.getElementById("achieve-display").innerText = shortNum(playerStats.achievementMult * 100)
 }
 
-//function that handles achievements
+//function that handles achievements and contains array holding achievement objects
 function updateAchievements() {
 
 
     //Array holding achievement objects
     let achievements = [
+        //upgrade
         {
             title: "Triple Strike",
             description: "Player owns at least 3 pickaxes",
-            message: "What am I going do do with 3 pickaxes?? I only have two hands!",
+            message: "What am I going do do with 3 pickaxes?? I only have two hands! (+10% rocks)",
             bonus: 0.1,
             complete: false,
             criteria: upgrades[0].level,
             unlockValue: 2
         },
+        //Rock count achievements
         {
             title: "Collector I",
             description: "Own 10,000 rocks",
-            message: "These are getting hard to count",
+            message: "These are getting hard to count (+10% rocks)",
             bonus: 0.1,
             complete: false,
             criteria: rockCount,
@@ -361,8 +363,8 @@ function updateAchievements() {
         {
             title: "Collector II",
             description: "Own 100,000,000 rocks",
-            message: "We have to go deeper!",
-            bonus: 0.2,
+            message: "We have to go deeper!  (+30% rocks)",
+            bonus: 0.3,
             complete: false,
             criteria: rockCount,
             unlockValue: 100000000
@@ -370,26 +372,26 @@ function updateAchievements() {
         {
             title: "Collector III",
             description: "Own 1,000,000,000,000 rocks",
-            message: "How many rocks are there??",
-            bonus: 0.3,
+            message: "How many rocks are there?? (+60% rocks)",
+            bonus: 0.6,
             complete: false,
             criteria: rockCount,
-            unlockValue: 1000000000000
+            unlockValue: 10 ** 12
         },
         {
             title: "Everest",
             description: "357 trillion rocks",
-            message: "More rocks than the world's tallest mountain",
-            bonus: 0.4,
+            message: "More rocks than the world's tallest mountain  (+100% rocks)",
+            bonus: 1.0,
             complete: false,
             criteria: rockCount,
-            unlockValue: 357000000000000
+            unlockValue: 357 ** 12
         },
         {
             title: "Collector IV",
             description: "1.000e+15 rocks",
-            message: "Gotta use scientific notation for all these rocks",
-            bonus: 0.5,
+            message: "Gotta use scientific notation for all these rocks (+150% rocks)",
+            bonus: 1.5,
             complete: false,
             criteria: rockCount,
             unlockValue: 10 ** 15
