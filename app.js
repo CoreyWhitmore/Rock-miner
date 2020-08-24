@@ -68,26 +68,70 @@ let upgrades = [
         description: "Increases income by 125"
     },
     {
-        name: "Blast-miner",
+        name: "Martial Artist",
         level: 0,
         cost: 1000000,
         clickPower: 0,
         income: 1000,
-        id: "blast-miner",
+        id: "martial-artist",
         visibility: "invisible",
         disabled: "disabled",
         description: "Increases income by 1,000"
     },
     {
-        name: "Excavator",
+        name: "Bomb Technician",
         level: 0,
-        cost: 10000000,
+        cost: 10 ** 7,
         clickPower: 0,
         income: 5000,
-        id: "Excavator",
+        id: "bomb-technician",
         visibility: "invisible",
         disabled: "disabled",
         description: "Increases income by 5,000"
+    },
+    {
+        name: "Giant Drill",
+        level: 0,
+        cost: 10 ** 9,
+        clickPower: 0,
+        income: 250000,
+        id: "giant-drill",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 250,000"
+    },
+    {
+        name: "Nuclear Blast Miner",
+        level: 0,
+        cost: 10 ** 12,
+        clickPower: 0,
+        income: 2 * (10 ** 7),
+        id: "nuclear-blast-miner",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 20,000,000"
+    },
+    {
+        name: "Plasma Lance",
+        level: 0,
+        cost: 10 ** 15,
+        clickPower: 0,
+        income: 1.5 * (10 ** 10),
+        id: "plasma-lance",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 15,000,000,000"
+    },
+    {
+        name: "Mountain Blaster",
+        level: 0,
+        cost: 10 ** 15,
+        clickPower: 0,
+        income: 1.5 * (10 ** 10),
+        id: "mountain-blaster",
+        visibility: "invisible",
+        disabled: "disabled",
+        description: "Increases income by 15,000,000,000"
     }
 ]
 
@@ -113,7 +157,7 @@ let enhancements = [
     },
     {
         name: "Rock Splitter",
-        cost: 10000000,
+        cost: 10 ** 7,
         bonus: 2,
         purchased: false,
         description: "Turns out if you cut a rock in half you have two rocks (+100% rocks)",
@@ -122,7 +166,7 @@ let enhancements = [
     },
     {
         name: "Strike gold",
-        cost: 1000000000,
+        cost: 10 ** 9,
         bonus: 2,
         purchased: false,
         description: "Sell all this stupid yellow rock you found for more rocks (+100% rocks)",
@@ -131,7 +175,7 @@ let enhancements = [
     },
     {
         name: "Gem deposit",
-        cost: 100000000000,
+        cost: 10 ** 11,
         bonus: 2,
         purchased: false,
         description: "Shiny rocks that can be traded for more rocks(+100% rocks)",
@@ -140,7 +184,7 @@ let enhancements = [
     },
     {
         name: "Geothermal Energy",
-        cost: 10000000000000,
+        cost: 10 ** 13,
         bonus: 2,
         purchased: false,
         description: "All this annoying lava can be harnessed to power your machines!",
