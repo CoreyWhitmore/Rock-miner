@@ -33,6 +33,10 @@ img{
     width:80%
 }
 
+.btn-enhance{
+    width:80%
+}
+
 /* NOTE not really what I wanted, but it works. The idea is for it to take up all available vertical space */
 #stats-display{
     height:42.7%

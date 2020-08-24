@@ -2,12 +2,14 @@
 
 let areas = ["hole in the ground", "mine", "mantle", "Asteroid", "Moon", "Planet", "Sun", "Black Hole", "Galaxy", "Universe"]
 
-let rockCount = 0
+let rockCount = 9999999999999999999999999999999999999
 
 
 let playerStats = {
     clickPower: 1,
-    income: 0
+    income: 0,
+    enhanceMult: 1,
+    achievementMult: 1
 }
 
 //Array holding upgrade objects
@@ -57,12 +59,12 @@ let upgrades = [
         description: "Increases income by 25"
     },
     {
-        name: "Digging Machine",
+        name: "Digger Machine",
         level: 0,
         cost: 100000,
         clickPower: 0,
         income: 125,
-        id: "digging-machine",
+        id: "digger-machine",
         visibility: "invisible",
         disabled: "disabled",
         description: "Increases income by 125"
@@ -88,6 +90,64 @@ let upgrades = [
         visibility: "invisible",
         disabled: "disabled",
         description: "Increases income by 5,000"
+    }
+]
+
+//Array holding enchancement objects
+let enhancements = [
+    {
+        name: "Sharper Tools",
+        cost: 1000,
+        bonus: 2,
+        purchased: false,
+        description: "Mining rocks with sharp tools will be much better than dull ones (+100% rocks)",
+        id: "sharp-tools",
+        visibility: "invisible"
+    },
+    {
+        name: "Coffee Maker",
+        cost: 100000,
+        bonus: 2,
+        purchased: false,
+        description: "Lots of caffine so you can work all day long (+100% rocks)",
+        id: "coffee-maker",
+        visibility: "invisible"
+    },
+    {
+        name: "Rock Splitter",
+        cost: 10000000,
+        bonus: 2,
+        purchased: false,
+        description: "Turns out if you cut a rock in half you have two rocks (+100% rocks)",
+        id: "rock-splitter",
+        visibility: "invisible"
+    },
+    {
+        name: "Strike gold",
+        cost: 1000000000,
+        bonus: 2,
+        purchased: false,
+        description: "Sell all this stupid yellow rock you found for more rocks (+100% rocks)",
+        id: "strike-gold",
+        visibility: "invisible"
+    },
+    {
+        name: "Gem deposit",
+        cost: 100000000000,
+        bonus: 2,
+        purchased: false,
+        description: "Shiny rocks that can be traded for more rocks(+100% rocks)",
+        id: "gem-deposit",
+        visibility: "invisible"
+    },
+    {
+        name: "Geothermal Energy",
+        cost: 10000000000000,
+        bonus: 2,
+        purchased: false,
+        description: "All this annoying lava can be harnessed to power your machines!",
+        id: "geothermal-energy",
+        visibility: "invisible"
     }
 ]
 
@@ -125,6 +185,63 @@ function drawUpgrades() {
     }
 }
 
+//Draws the Enhancement buttons
+function drawEnhancements() {
+    let template = '<div class="col-12"><h3>Enhancements</h3></div>'
+    for (let i = 0; i < enhancements.length; i++) {
+        let item = enhancements[i]
+        let itemCost = shortNum(item.cost)
+
+        template += `<div class="col-12 my-1">
+                        <button id="btn-${item.id}"
+                        class="btn btn-primary btn-enhance ${item.visibility}"
+                        type="submit"
+                        onclick="purchaseEnhancement('${item.id}')"
+                        ${item.disabled}
+                        data-toggle="tooltip"
+                        data-placement="right"
+                        title="${item.description}"> ${item.name} - ${itemCost} <span id="${item.id}"></span>
+                        </button>
+                    </div>`
+    }
+    document.getElementById("enhancement-container").innerHTML = template
+    for (let i = 0; i < enhancements.length; i++) {
+        let item = enhancements[i]
+        // @ts-ignore
+        $(`#btn-${item.id}`).tooltip({ delay: { "show": 500, "hide": 100 } })
+        // @ts-ignore
+        $(`#btn-${item.id}`).on('click', function () {
+            // @ts-ignore
+            $(this).tooltip('hide')
+        })
+    }
+}
+
+//determines which Enhancement buttons are visible and unlocked
+function updateEnhanceUnlocks() {
+    for (let i = 0; i < enhancements.length; i++) {
+        let item = enhancements[i]
+        let itemCost = Math.floor(item.cost)
+        if (rockCount >= itemCost && item.purchased == false) {
+            item.visibility = "visible"
+            document.getElementById("btn-" + item.id).setAttribute(`class`, `btn btn-primary btn-enhance ${item.visibility}`)
+        } else {
+            item.visibility = "invisible"
+        }
+    }
+}
+
+//purchases enhancement when the button is clicked
+function purchaseEnhancement(id) {
+    let item = findEnhancement(id)
+    rockCount -= Math.floor(item.cost)
+    item.purchased = true
+    updatePlayer()
+    updateScreen()
+    drawEnhancements()
+}
+
+
 //levels up an item whenever you click the relevant button
 function upgrade(id) {
     let item = findItem(id)
@@ -145,27 +262,24 @@ function findItem(id) {
     }
 }
 
-//Updates the player's stats based on the current items
-function updatePlayer() {
-    playerStats.clickPower = 1
-    playerStats.income = 0
-    for (let i = 0; i < upgrades.length; i++) {
-        let item = upgrades[i]
-        playerStats.clickPower += item.clickPower * item.level
-        playerStats.income += item.income * item.level
+function findEnhancement(id) {
+    for (let i = 0; i < enhancements.length; i++) {
+        if (enhancements[i].id == id) {
+            return enhancements[i]
+        }
     }
 }
 
 //handles passive income
 setInterval(() => {
-    rockCount += playerStats.income / 10
+    rockCount += (playerStats.income * playerStats.enhanceMult * playerStats.achievementMult) / 100
     updateScreen()
-}, 100);
+}, 10);
 
 //increases the player's rock count by their click power
 function clickMine() {
     quickDisable("btn-mine")
-    rockCount += playerStats.clickPower
+    rockCount += playerStats.clickPower * playerStats.enhanceMult * playerStats.achievementMult
     updateScreen()
 }
 
@@ -178,7 +292,7 @@ function quickDisable(target) {
 }
 
 //determines which upgrade buttons are visible and unlocked
-function updateUnlocks() {
+function updateUpgradeUnlocks() {
     for (let i = 0; i < upgrades.length; i++) {
         let item = upgrades[i]
         let itemCost = Math.floor(item.cost)
@@ -192,15 +306,71 @@ function updateUnlocks() {
     }
 }
 
+//Updates the player's stats based on the current items
+function updatePlayer() {
+    playerStats.clickPower = 1
+    playerStats.income = 0
+    for (let i = 0; i < upgrades.length; i++) {
+        let item = upgrades[i]
+        playerStats.clickPower += item.clickPower * item.level
+        playerStats.income += item.income * item.level
+    }
+}
+
+function updateEnhancements() {
+    playerStats.enhanceMult = 1;
+    for (let i = 0; i < enhancements.length; i++) {
+        if (enhancements[i].purchased) {
+            playerStats.enhanceMult *= enhancements[i].bonus
+        }
+    }
+}
+
 //updates the player's stats window
 function updateStats() {
-    let clickPower
-    let income
+    document.getElementById("click-power-display").innerText = shortNum(playerStats.clickPower * playerStats.enhanceMult * playerStats.achievementMult)
+    document.getElementById("income-display").innerText = shortNum(playerStats.income * playerStats.enhanceMult * playerStats.achievementMult) + "/sec"
+    document.getElementById("enhance-display").innerText = shortNum(playerStats.enhanceMult * 100)
+    document.getElementById("achieve-display").innerText = shortNum(playerStats.achievementMult * 100)
+}
+
+//function that handles achievements
+function updateAchievements() {
+
+
+    //Array holding achievement objects
+    let achievements = [
+        {
+            title: "Triple Strike",
+            description: "Player owns at least 3 pickaxes",
+            message: "What am I going do do with 3 pickaxes?? I only have two hands!",
+            bonus: 0.1,
+            complete: false,
+            criteria: upgrades[0].level,
+            unlockValue: 2
+        }
+    ]
+
+    //checks for new completed achievements
+    for (let i = 0; i < achievements.length; i++) {
+        let achievement = achievements[i]
+        if (achievement.criteria >= achievement.unlockValue) {
+            achievements[0].complete = true
+            document.getElementById("message-display").innerText = "Achievement: " + achievements[0].title + "\n" + achievements[0].message
+        }
+    }
 
 
 
-    document.getElementById("click-power-display").innerText = shortNum(playerStats.clickPower)
-    document.getElementById("income-display").innerText = shortNum(playerStats.income) + "/sec"
+
+    //updates player's stats based on completed achievements
+    let achievementBonus = 1
+    for (let i = 0; i < achievements.length; i++) {
+        if (achievements[i].complete) {
+            achievementBonus += achievements[i].bonus
+        }
+    }
+    playerStats.achievementMult = achievementBonus
 }
 
 //calls all relevant update fuctions to update the screen
@@ -208,7 +378,10 @@ function updateScreen() {
     let rockDisplay = shortNum(rockCount)
     document.getElementById("rock-count").innerText = rockDisplay
     updateStats()
-    updateUnlocks()
+    updateUpgradeUnlocks()
+    updateEnhanceUnlocks()
+    updateAchievements()
+    updateEnhancements()
 }
 
 //Allows for displaying numbers inn exponential form
@@ -216,6 +389,7 @@ function expo(x, f) {
     return Number.parseFloat(x).toExponential(f);
 }
 
+//Changes large numbers to a shorter form (ex: 10,000,000 -> 10M)
 function shortNum(num) {
     if (num < 10000) {
         return (Math.floor(num)).toString()
@@ -232,7 +406,7 @@ function shortNum(num) {
     }
 }
 
-
+drawEnhancements()
 drawUpgrades()
 updateScreen()
 
