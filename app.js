@@ -218,7 +218,7 @@ function drawUpgrades() {
     for (let i = 0; i < upgrades.length; i++) {
         let item = upgrades[i]
         // @ts-ignore
-        $(`#btn-${item.id}`).tooltip({ delay: { "show": 500, "hide": 100 } })
+        $(`#btn-${item.id}`).tooltip({ delay: { "show": 100, "hide": 200 } })
         // @ts-ignore
         $(`#btn-${item.id}`).on('click', function () {
             // @ts-ignore
@@ -250,7 +250,7 @@ function drawEnhancements() {
     for (let i = 0; i < enhancements.length; i++) {
         let item = enhancements[i]
         // @ts-ignore
-        $(`#btn-${item.id}`).tooltip({ delay: { "show": 500, "hide": 100 } })
+        $(`#btn-${item.id}`).tooltip({ delay: { "show": 100, "hide": 200 } })
         // @ts-ignore
         $(`#btn-${item.id}`).on('click', function () {
             // @ts-ignore
