@@ -2,7 +2,7 @@
 
 let areas = ["hole in the ground", "mine", "mantle", "Asteroid", "Moon", "Planet", "Sun", "Black Hole", "Galaxy", "Universe"]
 
-let rockCount = 9999999999999999999999999999999999999
+let rockCount = 10 ** 15
 
 
 let playerStats = {
@@ -348,15 +348,61 @@ function updateAchievements() {
             complete: false,
             criteria: upgrades[0].level,
             unlockValue: 2
+        },
+        {
+            title: "Collector I",
+            description: "Own 10,000 rocks",
+            message: "These are getting hard to count",
+            bonus: 0.1,
+            complete: false,
+            criteria: rockCount,
+            unlockValue: 10000
+        },
+        {
+            title: "Collector II",
+            description: "Own 100,000,000 rocks",
+            message: "We have to go deeper!",
+            bonus: 0.2,
+            complete: false,
+            criteria: rockCount,
+            unlockValue: 100000000
+        },
+        {
+            title: "Collector III",
+            description: "Own 1,000,000,000,000 rocks",
+            message: "How many rocks are there??",
+            bonus: 0.3,
+            complete: false,
+            criteria: rockCount,
+            unlockValue: 1000000000000
+        },
+        {
+            title: "Everest",
+            description: "357 trillion rocks",
+            message: "More rocks than the world's tallest mountain",
+            bonus: 0.4,
+            complete: false,
+            criteria: rockCount,
+            unlockValue: 357000000000000
+        },
+        {
+            title: "Collector IV",
+            description: "1.000e+15 rocks",
+            message: "Gotta use scientific notation for all these rocks",
+            bonus: 0.5,
+            complete: false,
+            criteria: rockCount,
+            unlockValue: 10 ** 15
         }
+
     ]
 
     //checks for new completed achievements
     for (let i = 0; i < achievements.length; i++) {
         let achievement = achievements[i]
         if (achievement.criteria >= achievement.unlockValue) {
-            achievements[0].complete = true
-            document.getElementById("message-display").innerText = "Achievement: " + achievements[0].title + "\n" + achievements[0].message
+            achievements[i].complete = true
+            document.getElementById("message-display").innerText = "Achievement: " + achievements[i].title + "\n" + achievements[i].message
         }
     }
 
